@@ -10,20 +10,22 @@ function readTopicsFromFile(filename) {
   return fileContent.split('\n').map(line => line.trim()).filter(Boolean);
 }
 
+const courseTopics = readTopicsFromFile("../scraper/0.txt");
+
 // Function to create a structured prompt
-function createCoursePrompt(goal, knownSkills, courseTopics) {
+function createCoursePrompt(goal, knownSkills) {
   return `I want to become ${goal}. I already know skills like ${knownSkills}.
     I am giving you a list of topics in a particular course.
     For each topic, return either 'skip' (if I don't need to learn it) or 'watch' (if I need to learn it).
     The response must be strictly in JSON format with only key-value pairs where the key is the topic name
-    and the value is either 'skip' or 'watch'. No extra text, only JSON.
+    and the value is either 'skip' or 'watch'. No extra text, only JSON without any double quotes.
 
     Course Topics: ${JSON.stringify(courseTopics)}`;
 }
 
 // Function to generate response using Gemini
-async function generateCoursePlan(goal, knownSkills, courseTopics) {
-  const prompt = createCoursePrompt(goal, knownSkills, courseTopics);
+export async function generateCoursePlan(goal, knownSkills) {
+  const prompt = createCoursePrompt(goal, knownSkills);
   const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
   try {
@@ -34,21 +36,12 @@ async function generateCoursePlan(goal, knownSkills, courseTopics) {
     const startIndex = responseText.indexOf('{');
     const endIndex = responseText.lastIndexOf('}') + 1;
     const jsonStr = responseText.slice(startIndex, endIndex);
+    console.log("Response ok");
     return JSON.parse(jsonStr);
   } catch (error) {
+    console.error("Error:", error);
     return { error: error.toString() };
   }
 }
 
-// Example Usage
-const filename = "course_topics.txt"; // Change to your actual file path
-const goal = "SQL Database Manager";
-const knownSkills = "Basic SQL";
-
-// Read topics from the file
-const courseTopics = readTopicsFromFile("/content/0.txt");
-
-// Generate course plan and print output
-generateCoursePlan(goal, knownSkills, courseTopics)
-  .then(result => console.log(JSON.stringify(result, null, 2)))
-  .catch(error => console.error('Error:', error));
+generateCoursePlan("Data Scientist", "Python, SQL, Statistics").then(console.log).catch(console.error);

@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Textarea } from "@/components/ui/textarea"
 import { MessageCircle, Send } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import axios from "axios";
 
 export function AiChat() {
   const [isOpen, setIsOpen] = useState(false)
@@ -13,22 +14,29 @@ export function AiChat() {
   const [input, setInput] = useState("")
 
   const handleSend = async () => {
-    if (!input.trim()) return
+    if (!input.trim()) return;
+    const messageToSend = input;
+    const newMessages: { role: "user" | "assistant"; content: string }[] = [
+      ...messages,
+      { role: "user", content: messageToSend }
+    ];
+    setMessages(newMessages);
+    setInput("");
 
-    const newMessages = [...messages, { role: "user", content: input }]
-    setMessages(newMessages)
-    setInput("")
-
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/assistant", {
+        headers: { message: messageToSend }
+      });
+      const assistantContent = response.data.response;
+      console.log("Assistant response:", assistantContent);
+      setMessages([...newMessages, { role: "assistant", content: assistantContent }]);
+    } catch (error) {
+      console.error("Error fetching assistant response:", error);
       setMessages([
         ...newMessages,
-        {
-          role: "assistant",
-          content: "I'm here to help you with your product development journey. What would you like to know?",
-        },
-      ])
-    }, 1000)
+        { role: "assistant", content: "Error: Unable to get response from AI assistant." }
+      ]);
+    }
   }
 
   return (

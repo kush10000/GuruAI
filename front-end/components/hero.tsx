@@ -52,7 +52,7 @@ export function Hero() {
               disabled={!isFormComplete}
               title={!isFormComplete ? "Please fill in all fields to continue" : ""}
             >
-              <Link href="/build">Start Learning Now</Link>
+              <Link href={`/build?professionalGoals=${professionGoal}&skills=${skills}`}>Start Learning Now</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
               <Link href="#how-it-works">Learn More</Link>

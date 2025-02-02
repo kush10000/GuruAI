@@ -9,13 +9,12 @@ async function chat(userInput) {
   try {
     const response = await model.generateContent(userInput);
     const result = response.response.text();
+    console.log(result);
     return result;
   } catch (error) {
     console.error("Error:", error);
     return "Sorry, I encountered an error processing your request.";
   }
 }
-
-console.log(await chat("Hi what is your name"));
 
 export { chat };

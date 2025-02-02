@@ -1,5 +1,7 @@
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 interface PersonalizationSidebarProps {
   selectedItem: {
@@ -10,7 +12,28 @@ interface PersonalizationSidebarProps {
   onClose: () => void
 }
 
+
+
 export function PersonalizationSidebar({ selectedItem, onClose }: PersonalizationSidebarProps) {
+  const [data, setData] = useState(null);
+
+          useEffect(() => {
+            const fetchData = async () => {
+              try {
+                const response = await axios.get(`http://localhost:3001/api/personalize`, {
+                  headers: {
+                    'goal': 'Data-Science',
+                    'known-skills': 'Python,django,sql'
+                  }
+                });
+                setData(response.data);
+              } catch (error) {
+                console.error('Error fetching personalization data:', error);
+              }
+            };
+
+            fetchData();
+          }, [selectedItem]);
   return (
     <div className="w-64 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 p-4 h-full overflow-y-auto">
       <div className="flex justify-between items-center mb-4">
@@ -23,6 +46,20 @@ export function PersonalizationSidebar({ selectedItem, onClose }: Personalizatio
         <div>
           <h3 className="font-medium mb-2">{selectedItem.title}</h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{selectedItem.description}</p>
+
+          {data && (
+            <div className="mb-4">
+              <h4 className="font-medium mb-2">Personalized Recommendations:</h4>
+              <div className="space-y-2">
+                {Object.entries(data).map(([key, value]) => (
+                  <div key={key} className={`text-sm p-2 rounded ${value === 'skip' ? 'bg-gray-700' : 'bg-green-700' }`}>
+                    {key}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
           {selectedItem.type === "course" && (
             <div>
               <h4 className="font-medium mb-2">Recommended Next Steps:</h4>
