@@ -1,8 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+const GOOGLE_API_KEY = "AIzaSyAZVWKokQk73zrmGNvpN_7p9ig_QRsMbJk"
+
 const roadmap = `{"roadmap":[{"step":1,"title":"Learn Programming","skills":["Python","R","SQL"]},{"step":2,"title":"Mathematics & Statistics","skills":["Linear Algebra","Probability","Statistics","Calculus"]},{"step":3,"title":"Data Handling & Processing","skills":["Pandas","NumPy","Data Cleaning","ETL"]},{"step":4,"title":"Data Visualization","skills":["Matplotlib","Seaborn","Tableau","Power BI"]},{"step":5,"title":"Machine Learning","skills":["Supervised Learning","Unsupervised Learning","Scikit-Learn","Regression","Classification","Clustering"]},{"step":6,"title":"Deep Learning & AI","skills":["Neural Networks","TensorFlow","PyTorch","NLP","Computer Vision"]},{"step":7,"title":"Model Deployment & Big Data","skills":["Flask","FastAPI","Docker","Hadoop","Spark","MLOps"]}]}`;
 
-const GOOGLE_API_KEY = "YOUR_API_KEY";
 const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
 
 function createPrompt(wantTo, knows, roadmap) {
@@ -15,7 +16,7 @@ function createPrompt(wantTo, knows, roadmap) {
 async function generate(prompt) {
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
     const response = await model.generateContent(prompt);
-    const text = await response.text();
+    const text = response.response.text();
     return text;
 }
 
@@ -43,10 +44,11 @@ async function main() {
     const roadmapJson = cleanAndParseResponse(response);
 
     if (typeof roadmapJson === 'object' && roadmapJson !== null) {
-        console.log("Successfully parsed JSON:", roadmapJson);
+        console.log('Successfully parsed JSON:', JSON.stringify(roadmapJson, null, 2));
     } else {
         console.log(roadmapJson); // Print the error message
     }
 }
 
 main().catch(console.error);
+

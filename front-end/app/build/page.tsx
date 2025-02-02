@@ -7,12 +7,13 @@ import { AiChat } from "@/components/ai-chat"
 import { StatsSidebar } from "@/components/stats-sidebar"
 import { PersonalizationSidebar } from "@/components/personalization-sidebar"
 
-const SAMPLE_ROADMAP_DATA = [
+// Sample data - will be replaced with API call
+const sampleData = [
   {
     title: "Fundamentals of Programming",
     courses: [
       {
-        title: "Python for Beginners",
+        title: "Python for Beginners", 
         description: "Learn Python basics with hands-on exercises",
       },
       {
@@ -32,7 +33,7 @@ const SAMPLE_ROADMAP_DATA = [
     ],
   },
   {
-    title: "Web Development Basics",
+    title: "Web Development Basics", 
     courses: [
       {
         title: "HTML & CSS Fundamentals",
@@ -80,6 +81,8 @@ const SAMPLE_ROADMAP_DATA = [
 ]
 
 export default function BuildPage() {
+  const [roadmap, setRoadmap] = useState(sampleData)
+  setRoadmap(sampleData);
   const [selectedItem, setSelectedItem] = useState<{
     type: "course" | "resource" | "project"
     title: string
@@ -100,7 +103,7 @@ export default function BuildPage() {
         <main className="flex-1 p-6 overflow-y-auto ml-64 mr-64">
           <h1 className="text-2xl font-bold mb-6">Your Learning Roadmap</h1>
           <div className="space-y-6">
-            {SAMPLE_ROADMAP_DATA.map((item, index) => (
+            {roadmap.map((item, index) => (
               <RoadmapItem key={index} {...item} onPersonalize={handlePersonalize} />
             ))}
           </div>
