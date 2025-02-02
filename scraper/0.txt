@@ -1,0 +1,45 @@
+Note for Students - Before Start
+How to test your SQL environment
+SQL Classification
+Microproject – Requirement
+Design your data model
+Implement your data model
+Working with databases
+Working with tables
+Inserting data into a table
+Inserting from source, updating and deleting
+Selecting data from tables
+Microproject – Solution
+Selecting columns
+Using mathematical expressions
+Creating logical expressions
+Designing conditional expressions
+Filter Expressions
+CASE and CTE in Filters
+Subquery Filters
+Correlated Query Filter
+Introduction to join
+Inner Join queries
+Outer joins
+Other types of joins
+Using SQL Functions
+Mathematical Functions
+String Functions
+Date Time Functions
+Simple Aggregation
+Grouping Aggregation - Part 1
+Grouping Aggregation - Part 2
+Grouping Aggregation Filters
+Multilevel Aggregation - Part 1
+Multilevel Aggregation - Part 2
+Introduction to Window Aggregation
+Window Aggregates Part 1
+Window Aggregates Part 2
+Window Aggregates Part 3
+Set Operations
+Pivoting Data Sets
+Unpivot Data Sets
+Data Views
+Auxiliary Statements
+How to Use Practice Exercise
+Congratulations
